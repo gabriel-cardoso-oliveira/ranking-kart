@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { BSON } from 'realm';
 
 declare global {
   namespace ReactNavigation {
@@ -17,3 +18,19 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
   RootStackParamList,
   Screen
 >;
+
+export type LogList = {
+  _id: BSON.UUID;
+  pilot_id: string;
+  pilot: string;
+  hour: string;
+  lap_number: number;
+  back_time: string;
+  average_lap_speed: string;
+};
+
+export type FormattedResponse = {
+  message: string;
+  status: Boolean;
+  data: any;
+};
