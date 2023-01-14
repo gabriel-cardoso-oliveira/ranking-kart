@@ -9,15 +9,6 @@ import { getLogs } from '../database/services/LogService';
 export default function Home({ navigation }: RootStackScreenProps<'Home'>) {
   const [logs, setLogs] = useState<LogList[]>([]);
   const [ranking, setRanking] = useState<RankingList[]>([]);
-  // const rankingItem = () => (
-  //   <View
-  //     style={styles.card}
-  //     lightColor="#eee"
-  //     darkColor="rgba(255,255,255,0.1)"
-  //   >
-  //     <Text style={styles.title}>Home</Text>
-  //   </View>
-  // );
 
   const fetchLogs = async () => {
     const { status, data, message } = await getLogs();
@@ -30,47 +21,79 @@ export default function Home({ navigation }: RootStackScreenProps<'Home'>) {
     fetchLogs();
   }, []));
 
-  const rankingCalculate = async () => {
-    const pilotsIds = logs.map((log) => log.pilot_id);
-    const pilots = pilotsIds.filter((log, index) => pilotsIds.indexOf(log) === index);
+  const compareTimes = (first: RankingList, second: RankingList) => {
+    return first.total_time - second.total_time;
+  };
 
-    const resutl = pilots.map(((pilot): RankingList => {
-      const pilotLogs = logs.filter(log => log.pilot_id === pilot);
+  const rankingCalculate = (pilotResults: RankingList[]) => {
+    const result = pilotResults.sort(compareTimes);
+    console.log(result);
 
-      return {
-        placing: 0,
-        pilot_name: '',
-        pilot_id: '',
-        total_time: '',
-        laps_completed: '',
-      };
+    setRanking(result.map((pilot, index) => {
+      const pilotTmp: RankingList = pilot;
+      pilotTmp.placing = index + 1;
+
+      return pilotTmp;
     }));
   };
 
+  const getRaceResults = () => {
+    const pilotsIds = logs.map((log) => log.pilot_id);
+    const pilots = pilotsIds.filter((log, index) => pilotsIds.indexOf(log) === index);
+
+    const pilotResults = pilots.map((pilotId): RankingList => {
+      const pilotLogs = logs.filter(log => log.pilot_id === pilotId);
+
+      const totalTime = pilotLogs.reduce((accumulator, currentValue) => {
+        return accumulator + Number(currentValue.back_time);
+      }, 0);
+      const lapsCompleted = pilotLogs.filter(pilot => pilot.lap_number).length
+
+      return {
+        placing: 0,
+        pilot_name: pilotLogs[0].pilot,
+        pilot_id: pilotId,
+        total_time: totalTime,
+        laps_completed: lapsCompleted,
+      };
+    });
+
+    console.log(pilotResults);
+    rankingCalculate(pilotResults);
+  };
+
   useEffect(() => {
-    rankingCalculate();
+    getRaceResults();
   }, [logs]);
+
+  const rankingItem = ({pilot}: {pilot: RankingList}) => (
+    <View
+      style={styles.card}
+      lightColor="#eee"
+      darkColor="rgba(255,255,255,0.1)"
+    >
+      <Text style={styles.position}>{`${pilot.placing}°`}</Text>
+      <View style={styles.bodyCard}>
+        <Text style={styles.name}>{`${pilot.pilot_id} - ${pilot.pilot_name}`}</Text>
+        <View style={styles.containerText}>
+          <Text style={styles.text}>Voltas completadas:</Text>
+          <Text style={styles.value}>{pilot.laps_completed}</Text>
+        </View>
+        <View style={styles.containerText}>
+          <Text style={styles.text}>Tempo total de prova:</Text>
+          <Text style={styles.value}>{pilot.total_time}</Text>
+        </View>
+      </View>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-      <View
-        style={styles.card}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      >
-        <Text style={styles.position}>1°</Text>
-        <View style={styles.bodyCard}>
-          <Text style={styles.name}>033 - Gabriel Cardoso</Text>
-          <View style={styles.containerText}>
-            <Text style={styles.text}>Voltas completadas:</Text>
-            <Text style={styles.value}>4</Text>
-          </View>
-          <View style={styles.containerText}>
-            <Text style={styles.text}>Tempo total de prova:</Text>
-            <Text style={styles.value}>4</Text>
-          </View>
-        </View>
-      </View>
+      <FlatList
+        data={ranking}
+        renderItem={rankingItem}
+        keyExtractor={pilot => pilot.pilot_id}
+      />
     </View>
   );
 }
