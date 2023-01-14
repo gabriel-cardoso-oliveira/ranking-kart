@@ -23,10 +23,19 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Upload" component={Upload} />
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Edit" component={Edit} />
-      </Stack.Group>
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerTitle: 'Resultado da corrida',
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="Edit"
+        component={Edit}
+        options={{ presentation: 'modal' }}
+      />
     </Stack.Navigator>
   );
 }

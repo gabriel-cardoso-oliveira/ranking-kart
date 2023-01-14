@@ -27,3 +27,26 @@ export const saveLog = async (logs: LogList[]): Promise<FormattedResponse> => {
     };
   }
 };
+
+export const getLogs = async (): Promise<FormattedResponse> => {
+  const realm = await getRealm();
+
+  try {
+    const logs = realm.objects<LogList[]>('Log').toJSON();
+
+    realm.close();
+
+    return {
+      message: 'Registros obtidos com sucesso!',
+      data: logs,
+      status: true,
+    };
+  } catch (error) {
+    realm.close();
+    return {
+      message: 'Falha ao buscar registros. Tente novamente!',
+      data: null,
+      status: false,
+    };
+  }
+};
