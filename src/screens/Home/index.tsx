@@ -2,9 +2,9 @@ import { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, FlatList, Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { Text, View } from '../components/Themed';
-import { LogList, RootStackScreenProps, RankingList } from '../types';
-import { getLogs } from '../database/services/LogService';
+import { Text, View } from '../../components/Themed';
+import { LogList, RootStackScreenProps, RankingList } from '../../types';
+import { getLogs } from '../../database/services/LogService';
 
 export default function Home({ navigation }: RootStackScreenProps<'Home'>) {
   const [logs, setLogs] = useState<LogList[]>([]);
@@ -66,22 +66,22 @@ export default function Home({ navigation }: RootStackScreenProps<'Home'>) {
     getRaceResults();
   }, [logs]);
 
-  const rankingItem = ({pilot}: {pilot: RankingList}) => (
+  const rankingItem = ({ item }: { item: RankingList }) => (
     <View
       style={styles.card}
       lightColor="#eee"
       darkColor="rgba(255,255,255,0.1)"
     >
-      <Text style={styles.position}>{`${pilot.placing}°`}</Text>
+      <Text style={styles.position}>{`${item.placing}°`}</Text>
       <View style={styles.bodyCard}>
-        <Text style={styles.name}>{`${pilot.pilot_id} - ${pilot.pilot_name}`}</Text>
+        <Text style={styles.name}>{`${item.pilot_id} - ${item.pilot_name}`}</Text>
         <View style={styles.containerText}>
           <Text style={styles.text}>Voltas completadas:</Text>
-          <Text style={styles.value}>{pilot.laps_completed}</Text>
+          <Text style={styles.value}>{item.laps_completed}</Text>
         </View>
         <View style={styles.containerText}>
           <Text style={styles.text}>Tempo total de prova:</Text>
-          <Text style={styles.value}>{pilot.total_time}</Text>
+          <Text style={styles.value}>{item.total_time}</Text>
         </View>
       </View>
     </View>

@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, Button } from 'react-native';
 
-import { Text, View } from '../components/Themed';
-import { RootStackScreenProps } from '../types';
+import { Text, View } from '../../components/Themed';
+import { RootStackScreenProps } from '../../types';
 
 export default function Edit({ navigation }: RootStackScreenProps<'Edit'>) {
   return (
