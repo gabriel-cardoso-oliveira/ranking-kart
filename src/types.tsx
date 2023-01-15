@@ -38,6 +38,6 @@ export type RankingList = {
   placing: number;
   pilot_name: string;
   pilot_id: string;
-  total_time: number;
+  total_time: number | string;
   laps_completed: number;
 };
