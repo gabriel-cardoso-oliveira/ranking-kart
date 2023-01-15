@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { TouchableOpacity, Alert } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
@@ -9,6 +9,7 @@ import { Text, View } from '../../components/Themed';
 import UploadAnimation from '../../animations/UploadAnimation';
 import LoadingAnimation from '../../animations/LoadingAnimation';
 import { LogList, RootStackScreenProps } from '../../types';
+import styles from './styles';
 
 export default function Upload({ navigation }: RootStackScreenProps<'Upload'>) {
   const [isLoading, setIsLoading] = useState(false);
@@ -74,18 +75,3 @@ export default function Upload({ navigation }: RootStackScreenProps<'Upload'>) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginBottom: '10%',
-  },
-});
