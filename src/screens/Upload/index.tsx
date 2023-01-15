@@ -7,6 +7,7 @@ import * as FileSystem from 'expo-file-system';
 import { saveLog } from '../../database/services/LogService';
 import { Text, View } from '../../components/Themed';
 import UploadAnimation from '../../animations/UploadAnimation';
+import LoadingAnimation from '../../animations/LoadingAnimation';
 import { LogList, RootStackScreenProps } from '../../types';
 
 export default function Upload({ navigation }: RootStackScreenProps<'Upload'>) {
@@ -56,11 +57,20 @@ export default function Upload({ navigation }: RootStackScreenProps<'Upload'>) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Selecione o arquivo de log da corrida</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <TouchableOpacity onPress={handlePickDocument}>
-        <UploadAnimation />
-      </TouchableOpacity>
+      {!isLoading && (
+        <>
+          <Text style={styles.title}>Selecione o arquivo de log da corrida</Text>
+          <TouchableOpacity onPress={handlePickDocument}>
+            <UploadAnimation />
+          </TouchableOpacity>
+        </>
+      )}
+      {isLoading && (
+        <>
+          <Text style={styles.title}>Carregando...</Text>
+          <LoadingAnimation />
+        </>
+      )}
     </View>
   );
 }
@@ -70,14 +80,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    fontSize: 26,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: '10%',
   },
 });

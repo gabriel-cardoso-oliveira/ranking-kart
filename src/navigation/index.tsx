@@ -22,7 +22,14 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Upload" component={Upload} />
+      <Stack.Screen
+        name="Upload"
+        component={Upload}
+        options={{
+          headerShadowVisible: false,
+          headerTitle: '',
+        }}
+      />
       <Stack.Screen
         name="Home"
         component={Home}
