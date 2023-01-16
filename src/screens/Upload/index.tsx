@@ -18,9 +18,9 @@ export default function Upload({ navigation }: RootStackScreenProps<'Upload'>) {
     const { status, message } = await saveLog(logs);
 
     setIsLoading(false);
-    Alert.alert('Upload', message);
 
-    if (status) navigation.navigate('Home');
+    if (!status) Alert.alert('Upload', message);
+    else navigation.navigate('Home');
   };
 
   const readFile = async (uri: string) => {
