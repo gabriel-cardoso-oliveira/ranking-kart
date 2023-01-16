@@ -4,7 +4,7 @@ import uuid from 'react-native-uuid';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 
-import { saveLog } from '../../database/services/LogService';
+import { saveLog, clearLogs } from '../../database/services/LogService';
 import { Text, View } from '../../components/Themed';
 import UploadAnimation from '../../animations/UploadAnimation';
 import LoadingAnimation from '../../animations/LoadingAnimation';
@@ -15,6 +15,8 @@ export default function Upload({ navigation }: RootStackScreenProps<'Upload'>) {
   const [isLoading, setIsLoading] = useState(false);
 
   const newLogRegister = async (logs: LogList[]) => {
+    await clearLogs();
+
     const { status, message } = await saveLog(logs);
 
     setIsLoading(false);

@@ -50,3 +50,28 @@ export const getLogs = async (): Promise<FormattedResponse> => {
     };
   }
 };
+
+export const clearLogs = async (): Promise<FormattedResponse> => {
+  const realm = await getRealm();
+
+  try {
+    realm.write(() => {
+      realm.delete(realm.objects('Log'));
+    });
+
+    realm.close();
+
+    return {
+      message: 'Registros deletados com sucesso!',
+      data: null,
+      status: true,
+    };
+  } catch (error) {
+    realm.close();
+    return {
+      message: 'Falha ao deletar registros. Tente novamente!',
+      data: null,
+      status: false,
+    };
+  }
+};
