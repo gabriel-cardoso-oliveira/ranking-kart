@@ -10,7 +10,7 @@ export type RootStackParamList = {
   Upload: undefined;
   Home: undefined;
   Edit: undefined;
-  NotFound: undefined;
+  Detail: { pilotId: string; };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

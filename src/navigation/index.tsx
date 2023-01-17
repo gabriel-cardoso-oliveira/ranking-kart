@@ -6,6 +6,7 @@ import { ColorSchemeName } from 'react-native';
 import Edit from '../screens/Edit';
 import Home from '../screens/Home';
 import Upload from '../screens/Upload';
+import Detail from '../screens/Detail';
 import { RootStackParamList } from '../types';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -41,7 +42,20 @@ function RootNavigator() {
       <Stack.Screen
         name="Edit"
         component={Edit}
-        options={{ presentation: 'modal' }}
+        options={{
+          presentation: 'modal',
+          headerTitle: 'Editar',
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="Detail"
+        component={Detail}
+        options={{
+          presentation: 'modal',
+          headerTitle: 'Detalhes das voltas',
+          headerTitleAlign: 'center',
+        }}
       />
     </Stack.Navigator>
   );

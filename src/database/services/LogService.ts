@@ -75,3 +75,31 @@ export const clearLogs = async (): Promise<FormattedResponse> => {
     };
   }
 };
+
+export const getPilotLogs = async (
+  pilotId: string,
+): Promise<FormattedResponse> => {
+  const realm = await getRealm();
+
+  try {
+    const logs = realm
+      .objects<LogList[]>('Log')
+      .filtered(`pilot_id = '${pilotId}'`)
+      .toJSON();
+
+    realm.close();
+
+    return {
+      message: 'Registros obtidos com sucesso!',
+      data: logs,
+      status: true,
+    };
+  } catch (error) {
+    realm.close();
+    return {
+      message: 'Falha ao buscar registros. Tente novamente!',
+      data: null,
+      status: false,
+    };
+  }
+};

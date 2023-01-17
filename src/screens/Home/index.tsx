@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { FlatList, Alert } from 'react-native';
+import { FlatList, Alert, TouchableOpacity } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { Text, View } from '../../components/Themed';
@@ -71,27 +71,35 @@ export default function Home({ navigation }: RootStackScreenProps<'Home'>) {
     getRaceResults();
   }, [logs]);
 
+  const handleNavigateToDetail = (pilotId: string) => {
+    navigation.navigate('Detail', {
+      pilotId,
+    });
+  };
+
   const rankingItem = ({ item }: { item: RankingList }) => (
-    <View
-      style={styles.card}
-      lightColor="#eee"
-      darkColor="rgba(255,255,255,0.1)"
-    >
-      <Text style={styles.position}>{`${item.placing}°`}</Text>
-      <View style={styles.bodyCard}>
-        <Text style={styles.name}>
-          {`${item.pilot_id} - ${item.pilot_name}`}
-        </Text>
-        <View style={styles.containerText}>
-          <Text style={styles.text}>Voltas completadas:</Text>
-          <Text style={styles.value}>{item.laps_completed}</Text>
-        </View>
-        <View style={styles.containerText}>
-          <Text style={styles.text}>Tempo total de prova:</Text>
-          <Text style={styles.value}>{item.total_time}</Text>
+    <TouchableOpacity onPress={() => handleNavigateToDetail(item.pilot_id)}>
+      <View
+        style={styles.card}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      >
+        <Text style={styles.position}>{`${item.placing}°`}</Text>
+        <View style={styles.bodyCard}>
+          <Text style={styles.name}>
+            {`${item.pilot_id} - ${item.pilot_name}`}
+          </Text>
+          <View style={styles.containerText}>
+            <Text style={styles.text}>Voltas completadas:</Text>
+            <Text style={styles.value}>{item.laps_completed}</Text>
+          </View>
+          <View style={styles.containerText}>
+            <Text style={styles.text}>Tempo total de prova:</Text>
+            <Text style={styles.value}>{item.total_time}</Text>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
