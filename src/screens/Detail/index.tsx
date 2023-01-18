@@ -5,17 +5,25 @@ import {
   TouchableOpacity,
   Alert,
   FlatList,
+  SafeAreaView,
+  TextInput,
 } from 'react-native';
 
 import { Text, View } from '../../components/Themed';
-import { RootStackScreenProps, LogList } from '../../types';
-import { getPilotLogs } from '../../database/services/LogService';
+import Modal from '../../components/StyledModal';
+import { RootStackScreenProps, LogList, UpdateLog } from '../../types';
+import { getPilotLogs, updateLog } from '../../database/services/LogService';
 import styles from './styles';
 
-export default function Detail({ navigation, route }: RootStackScreenProps<'Detail'>) {
+export default function Detail({ route }: RootStackScreenProps<'Detail'>) {
   const { pilotId } = route.params;
 
   const [logs, setLogs] = useState<LogList[]>([]);
+  const [logSelected, setLogSelected] = useState<LogList>();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [backTime, setBackTime] = useState('');
+  const [averageLapSpeed, setAverageLapSpeed] = useState('');
+  const [hour, setHour] = useState('');
 
   const fetchLogs = async () => {
     const { status, data, message } = await getPilotLogs(pilotId);
@@ -28,8 +36,41 @@ export default function Detail({ navigation, route }: RootStackScreenProps<'Deta
     fetchLogs();
   }, [pilotId]);
 
+  const onOpenModel = (item: LogList) => {
+    setBackTime(item.back_time);
+    setAverageLapSpeed(item.average_lap_speed);
+    setHour(item.hour);
+    setLogSelected(item);
+
+    setIsModalVisible(true);
+  };
+
+  const handleLapEditing = async () => {
+    if (!backTime || !averageLapSpeed || !hour) {
+      Alert.alert('Volta', 'É necessário preencher todos os campos');
+    } else {
+      const data: UpdateLog = {
+        average_lap_speed: averageLapSpeed,
+        back_time: backTime,
+        hour,
+      };
+
+      const logId = String(logSelected!._id);
+
+      const { status, message } = await updateLog(
+        logId,
+        data,
+      );
+
+      if (status) {
+        fetchLogs();
+        setIsModalVisible(false);
+      } else Alert.alert('Volta', message);
+    }
+  };
+
   const logItem = ({ item }: { item: LogList }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('Edit')}>
+    <TouchableOpacity onPress={() => onOpenModel(item)}>
       <View
         style={styles.card}
         lightColor="#eee"
@@ -62,6 +103,56 @@ export default function Detail({ navigation, route }: RootStackScreenProps<'Deta
         renderItem={logItem}
         keyExtractor={log => String(log._id)}
       />
+      <Modal
+        isVisible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        title='Editar volta'
+      >
+        <SafeAreaView style={{ flex: 1 }}>
+          <View style={styles.containerForm}>
+            <View style={styles.containerInput}>
+              <Text style={styles.label}>Tempo da volta</Text>
+              <TextInput
+                value={backTime}
+                onChangeText={(backTime) => setBackTime(backTime)}
+                placeholder={'Tempo da volta'}
+                keyboardType='numeric'
+                style={styles.input}
+              />
+            </View>
+            <View style={styles.containerInput}>
+              <Text style={styles.label}>
+                Velocidade média da volta
+              </Text>
+              <TextInput
+                value={averageLapSpeed}
+                onChangeText={
+                  (averageLapSpeed) => setAverageLapSpeed(averageLapSpeed)
+                }
+                placeholder={'Velocidade média da volta'}
+                keyboardType='numeric'
+                style={styles.input}
+              />
+            </View>
+            <View style={styles.containerInput}>
+              <Text style={styles.label}>Hora</Text>
+              <TextInput
+                value={hour}
+                onChangeText={(hour) => setHour(hour)}
+                placeholder={'Hora'}
+                keyboardType="numeric"
+                style={styles.input}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleLapEditing}
+            >
+              <Text style={styles.textButton}>Atualizar</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </Modal>
 
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>

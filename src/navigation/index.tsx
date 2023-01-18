@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
 
-import Edit from '../screens/Edit';
 import Home from '../screens/Home';
 import Upload from '../screens/Upload';
 import Detail from '../screens/Detail';
@@ -36,15 +35,6 @@ function RootNavigator() {
         component={Home}
         options={{
           headerTitle: 'Resultado da corrida',
-          headerTitleAlign: 'center',
-        }}
-      />
-      <Stack.Screen
-        name="Edit"
-        component={Edit}
-        options={{
-          presentation: 'modal',
-          headerTitle: 'Editar',
           headerTitleAlign: 'center',
         }}
       />

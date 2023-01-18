@@ -9,7 +9,6 @@ declare global {
 export type RootStackParamList = {
   Upload: undefined;
   Home: undefined;
-  Edit: undefined;
   Detail: { pilotId: string; };
 };
 
@@ -40,4 +39,17 @@ export type RankingList = {
   pilot_id: string;
   total_time: number | string;
   laps_completed: number;
+};
+
+export type StyledModalProps = {
+  isVisible: boolean;
+  title: string;
+  children: JSX.Element;
+  onClose: () => void;
+};
+
+export type UpdateLog = {
+  hour: string;
+  back_time: string;
+  average_lap_speed: string;
 };

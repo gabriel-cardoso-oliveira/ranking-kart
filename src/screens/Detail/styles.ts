@@ -1,3 +1,4 @@
+import { bundleDirectory } from 'expo-file-system';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -35,6 +36,44 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.0)',
+  },
+  containerForm: {
+    flexDirection: 'column',
+    marginHorizontal: 20,
+    marginTop: 20,
+    backgroundColor: 'rgba(0,0,0,0.0)',
+  },
+  containerInput: {
+    flexDirection: 'column',
+    marginBottom: 20,
+    backgroundColor: 'rgba(0,0,0,0.0)',
+  },
+  button: {
+    borderRadius: 15,
+    backgroundColor: 'blue',
+    width: '100%',
+    height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  textButton: {
+    color: '#eee',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  input: {
+    width: '100%',
+    height: 44,
+    padding: 10,
+    marginTop: 10,
+    backgroundColor: '#e8e8e8',
+    borderRadius: 15,
+  },
+  label: {
+    color: '#eee',
+    fontSize: 18,
+    fontWeight: '600',
   },
 });
 
