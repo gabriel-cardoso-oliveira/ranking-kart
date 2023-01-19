@@ -17,29 +17,29 @@ npm install
 Test:
 
 ```
-npm react-native start
+npx react-native start
 ```
 In another terminal:
 ```
-npm react-native rum-android
+npx react-native rum-android
 ```
 
 ## Page 1
 <p align="center">
-  <img src="./src/assets/images/Screenshot_01.png" />
+  <img src="./src/assets/images/Screenshot_01.png" width="380" height="100%" />
 </p>
 
 ## Page 2
 <p align="center">
-  <img src="./src/assets/images/Screenshot_02.png" />
+  <img src="./src/assets/images/Screenshot_02.png" width="380" height="100%" />
 </p>
 
 ## Page 3
 <p align="center">
-  <img src="./src/assets/images/Screenshot_03.png" />
+  <img src="./src/assets/images/Screenshot_03.png" width="380" height="100%" />
 </p>
 
 ## Page 4
 <p align="center">
-  <img src="./src/assets/images/Screenshot_04.png" />
+  <img src="./src/assets/images/Screenshot_04.png" width="380" height="100%" />
 </p>
